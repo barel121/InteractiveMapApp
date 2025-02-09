@@ -3,7 +3,6 @@ import { Tool } from './tool.model';
 
 export type DrawnFeature = {
   featureId: number;
-  featureTool: Tool;
+  featureTool: string;
   featureLatlang: L.LatLng;
-  featureLayer: L.Layer;
 };

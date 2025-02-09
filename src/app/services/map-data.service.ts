@@ -9,6 +9,7 @@ export class MapDataService {
     this.loadFeatures();
   }
   private features: DrawnFeature[] = [];
+  private featureLayers = new Map<number, L.Layer>();
   initLocalStorageDb(): void {
     if (!localStorage.getItem('savedFeatures')) {
       this.saveFeatures();
@@ -31,8 +32,9 @@ export class MapDataService {
       console.error('Error while saving features:', error);
     }
   }
-  addFeature(feature: DrawnFeature): void {
+  addFeature(feature: DrawnFeature, layer: L.Layer): void {
     this.features.push(feature);
+    this.featureLayers.set(feature.featureId, layer);
     this.saveFeatures();
   }
   getFeatures(): DrawnFeature[] {
@@ -42,7 +44,16 @@ export class MapDataService {
     this.features = this.features.filter(
       (f) => f.featureId !== feature.featureId
     );
+    const layer = this.featureLayers.get(feature.featureId);
+    if (layer) {
+      layer.remove();
+      this.featureLayers.delete(feature.featureId);
+    }
     this.saveFeatures();
+  }
+
+  getFeatureLayers(): Map<number, L.Layer> {
+    return this.featureLayers;
   }
   clearAllFeatures(): void {
     this.features = [];
