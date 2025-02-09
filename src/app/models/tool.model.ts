@@ -7,6 +7,7 @@ export type Tool = {
     map: L.Map,
     drawnItems: L.FeatureGroup,
     tempPoints: L.LatLngExpression[],
-    latlng: L.LatLng
+    latlng: L.LatLngExpression[]
   ) => L.Layer; // For seperating the action from the map component for future use without chaning the component
+  focus: (map: L.Map, layer: L.Layer) => void;
 };
