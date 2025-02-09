@@ -1,0 +1,32 @@
+<div>
+  <h2>Select tool feature</h2>
+  <ul>
+    @for(tool of availableTools; track tool.toolName) {
+    <li
+      (click)="selectTool(tool.toolName)"
+      [class.selected]="tool.toolName === selectedTool?.toolName"
+    >
+      {{ tool.displayName }}
+    </li>
+    } @empty {
+    <li>Tools are not found</li>
+    }
+  </ul>
+</div>
+<div>
+  <h2>Feature List</h2>
+  <ul>
+    @for(feature of features; track feature.featureId) {
+    <li>
+      <span (click)="selectFeature(feature.featureId, feature.featureTool)">
+        {{ feature.featureTool }}
+        {{ feature.featureLatlang }}
+      </span>
+      <span (click)="deleteFeature(feature)">Delete</span>
+    </li>
+    } @empty {
+    <li>No features found.</li>
+    }
+  </ul>
+</div>
+<div id="map" style="height: 500px; width: 100%"></div>
