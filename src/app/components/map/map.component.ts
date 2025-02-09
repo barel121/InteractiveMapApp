@@ -30,7 +30,21 @@ export class MapComponent {
     this.mapDataService.features$.subscribe((features) => {
       this.features = features;
     });
+    this.mapDataService.selectedFeature$.subscribe((feature) => {
+      if (feature) this.focusOnFeature(feature);
+    });
   }
+
+  focusOnFeature(feature: DrawnFeature) {
+    const layer = this.mapDataService.getFeatureLayers().get(feature.featureId);
+    if (layer) {
+      const toolOfLayer = this.toolMap.get(feature.featureTool);
+      if (toolOfLayer) {
+        toolOfLayer.focus(this._map, layer);
+      }
+    }
+  }
+
   ngAfterViewInit() {
     this._map = L.map('map').setView(
       [31.264883386785765, 34.81456527201976],
@@ -53,22 +67,7 @@ export class MapComponent {
     this.tempPoints = [];
   }
 
-  deleteFeature(selectedFeature: DrawnFeature): void {
-    this.mapDataService.deleteFeature(selectedFeature);
-  }
-  selectFeature(selectedFeature: number, selectedFeatureTool: string): void {
-    const selectedLayer = this.mapDataService
-      .getFeatureLayers()
-      .get(selectedFeature);
-    if (selectedLayer) {
-      const toolOfLayer = this.toolMap.get(selectedFeatureTool);
-      if (toolOfLayer) {
-        toolOfLayer.focus(this._map, selectedLayer);
-      }
-    }
-  }
   private loadFeaturesOnMap() {
-    console.log('Loading features:', this.features);
     this.features.forEach((f) => {
       const tool = this.toolMap.get(f.featureTool);
       if (tool) {
@@ -82,6 +81,7 @@ export class MapComponent {
       }
     });
   }
+
   private handleMapClick(latlng: L.LatLng) {
     if (this.selectedTool) {
       try {
