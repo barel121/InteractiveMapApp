@@ -8,6 +8,12 @@ import { BehaviorSubject } from 'rxjs';
 export class MapDataService {
   private featuresSubject = new BehaviorSubject<DrawnFeature[]>([]);
   features$ = this.featuresSubject.asObservable();
+
+  private selectedFeatureSubject = new BehaviorSubject<DrawnFeature | null>(
+    null
+  );
+  selectedFeature$ = this.selectedFeatureSubject.asObservable();
+
   private featureLayers = new Map<number, L.Layer>();
 
   constructor() {
@@ -36,6 +42,9 @@ export class MapDataService {
     }
   }
 
+  selectFeature(feature: DrawnFeature): void {
+    this.selectedFeatureSubject.next(feature);
+  }
   addFeature(feature: DrawnFeature, layer: L.Layer): void {
     if (!feature || !feature.featureId) {
       console.error('Invalid feature:', feature);
@@ -50,6 +59,9 @@ export class MapDataService {
     this.saveFeatures();
   }
 
+  getFeatures(): DrawnFeature[] {
+    return this.featuresSubject.getValue();
+  }
   deleteFeature(feature: DrawnFeature): void {
     if (!feature || !feature.featureId) {
       console.error('Invalid feature to delete:', feature);
