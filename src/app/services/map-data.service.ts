@@ -14,6 +14,9 @@ export class MapDataService {
   );
   selectedFeature$ = this.selectedFeatureSubject.asObservable();
 
+  private selectedToolSubject = new BehaviorSubject<string | null>(null);
+  selectedTool$ = this.selectedToolSubject.asObservable();
+
   private featureLayers = new Map<number, L.Layer>();
 
   constructor() {
@@ -57,6 +60,9 @@ export class MapDataService {
     this.featuresSubject.next(updatedFeatures);
     this.featureLayers.set(feature.featureId, layer);
     this.saveFeatures();
+  }
+  selectTool(toolName: string) {
+    this.selectedToolSubject.next(toolName); // ✅ מעדכן את הכלי הנבחר
   }
 
   getFeatures(): DrawnFeature[] {

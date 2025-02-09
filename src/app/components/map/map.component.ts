@@ -33,16 +33,10 @@ export class MapComponent {
     this.mapDataService.selectedFeature$.subscribe((feature) => {
       if (feature) this.focusOnFeature(feature);
     });
-  }
-
-  focusOnFeature(feature: DrawnFeature) {
-    const layer = this.mapDataService.getFeatureLayers().get(feature.featureId);
-    if (layer) {
-      const toolOfLayer = this.toolMap.get(feature.featureTool);
-      if (toolOfLayer) {
-        toolOfLayer.focus(this._map, layer);
-      }
-    }
+    this.mapDataService.selectedTool$.subscribe((tool) => {
+      this.selectedTool = this.toolMap.get(tool!) || null;
+      this.tempPoints = [];
+    });
   }
 
   ngAfterViewInit() {
@@ -60,11 +54,6 @@ export class MapComponent {
     this._map.on('click', (e: L.LeafletMouseEvent) => {
       this.handleMapClick(e.latlng);
     });
-  }
-
-  selectTool(toolName: string) {
-    this.selectedTool = this.toolMap.get(toolName) || null;
-    this.tempPoints = [];
   }
 
   private loadFeaturesOnMap() {
@@ -102,6 +91,16 @@ export class MapComponent {
         }
       } catch (e) {
         console.error(e);
+      }
+    }
+  }
+
+  focusOnFeature(feature: DrawnFeature) {
+    const layer = this.mapDataService.getFeatureLayers().get(feature.featureId);
+    if (layer) {
+      const toolOfLayer = this.toolMap.get(feature.featureTool);
+      if (toolOfLayer) {
+        toolOfLayer.focus(this._map, layer);
       }
     }
   }

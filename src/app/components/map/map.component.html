@@ -1,16 +1,1 @@
-<div>
-  <h2>Select tool feature</h2>
-  <ul>
-    @for(tool of availableTools; track tool.toolName) {
-    <li
-      (click)="selectTool(tool.toolName)"
-      [class.selected]="tool.toolName === selectedTool?.toolName"
-    >
-      {{ tool.displayName }}
-    </li>
-    } @empty {
-    <li>Tools are not found</li>
-    }
-  </ul>
-</div>
-<div id="map" style="height: 500px; width: 100%"></div>
+<div id="map"></div>
