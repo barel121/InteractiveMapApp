@@ -15,30 +15,32 @@ import * as L from 'leaflet';
 })
 export class MapComponent {
   private _map!: L.Map;
-  selectedTool: Tool | null = null;
-  availableTools: Tool[] = toolSet;
-  features: DrawnFeature[] = [];
   private drawnItems: L.FeatureGroup = L.featureGroup();
   private tempPoints: L.LatLngExpression[] = [];
   private toolMap = new Map<string, Tool>();
+  selectedTool: Tool | null = null;
+  availableTools: Tool[] = toolSet;
+  features: DrawnFeature[] = [];
 
   constructor(private mapDataService: MapDataService) {}
   ngOnInit() {
     this.toolMap = new Map(
       this.availableTools.map((tool) => [tool.toolName, tool])
     );
+    this.mapDataService.features$.subscribe((features) => {
+      this.features = features;
+    });
   }
   ngAfterViewInit() {
     this._map = L.map('map').setView(
       [31.264883386785765, 34.81456527201976],
-      13
+      14
     );
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this._map);
 
-    this.features = this.mapDataService.getFeatures();
     this.loadFeaturesOnMap();
 
     this._map.on('click', (e: L.LeafletMouseEvent) => {
@@ -53,12 +55,20 @@ export class MapComponent {
 
   deleteFeature(selectedFeature: DrawnFeature): void {
     this.mapDataService.deleteFeature(selectedFeature);
-    this.features = this.mapDataService.getFeatures();
   }
-  selectFeature(selectedFeature: number): void {
-    console.log(selectedFeature);
+  selectFeature(selectedFeature: number, selectedFeatureTool: string): void {
+    const selectedLayer = this.mapDataService
+      .getFeatureLayers()
+      .get(selectedFeature);
+    if (selectedLayer) {
+      const toolOfLayer = this.toolMap.get(selectedFeatureTool);
+      if (toolOfLayer) {
+        toolOfLayer.focus(this._map, selectedLayer);
+      }
+    }
   }
   private loadFeaturesOnMap() {
+    console.log('Loading features:', this.features);
     this.features.forEach((f) => {
       const tool = this.toolMap.get(f.featureTool);
       if (tool) {
@@ -68,7 +78,6 @@ export class MapComponent {
           this.tempPoints,
           f.featureLatlang
         );
-        console.log(featureLayer);
         this.mapDataService.getFeatureLayers().set(f.featureId, featureLayer);
       }
     });
@@ -76,19 +85,21 @@ export class MapComponent {
   private handleMapClick(latlng: L.LatLng) {
     if (this.selectedTool) {
       try {
+        const latlngs = [...this.tempPoints, latlng];
         const featureLayer = this.selectedTool.action(
           this._map,
           this.drawnItems,
           this.tempPoints,
-          latlng
+          latlngs
         );
-        const newFeature = {
-          featureId: Date.now(),
-          featureTool: this.selectedTool.toolName,
-          featureLatlang: latlng,
-        };
-        this.mapDataService.addFeature(newFeature, featureLayer);
-        this.features = this.mapDataService.getFeatures();
+        if (featureLayer && !(featureLayer instanceof L.LayerGroup)) {
+          const newFeature = {
+            featureId: Date.now(),
+            featureTool: this.selectedTool.toolName,
+            featureLatlang: latlngs,
+          };
+          this.mapDataService.addFeature(newFeature, featureLayer);
+        }
       } catch (e) {
         console.error(e);
       }

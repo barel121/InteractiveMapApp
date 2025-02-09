@@ -18,7 +18,7 @@
   <ul>
     @for(feature of features; track feature.featureId) {
     <li>
-      <span (click)="selectFeature(feature.featureId)">
+      <span (click)="selectFeature(feature.featureId, feature.featureTool)">
         {{ feature.featureTool }}
         {{ feature.featureLatlang }}
       </span>
