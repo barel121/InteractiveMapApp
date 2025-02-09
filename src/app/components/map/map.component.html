@@ -1,7 +1,7 @@
 <div>
   <h2>Select tool feature</h2>
   <ul>
-    @for(tool of tools; track tool.toolName) {
+    @for(tool of availableTools; track tool.toolName) {
     <li
       (click)="selectTool(tool.toolName)"
       [class.selected]="tool.toolName === selectedTool?.toolName"
@@ -10,6 +10,19 @@
     </li>
     } @empty {
     <li>Tools are not found</li>
+    }
+  </ul>
+</div>
+<div>
+  <h2>Feature List</h2>
+  <ul>
+    @for(feature of features; track feature.featureId) {
+    <li (click)="deleteFeature(feature)">
+      {{ feature.featureTool }}
+      {{ feature.featureLatlang }}
+    </li>
+    } @empty {
+    <li>No features found.</li>
     }
   </ul>
 </div>

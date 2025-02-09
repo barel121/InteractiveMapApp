@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { tools, Tool } from '../../utils/tools';
+import { toolSet } from '../../utils/tools';
+import { DrawnFeature } from '../../models/feature.model';
+import { Tool } from '../../models/tool.model';
 import * as L from 'leaflet';
 
 @Component({
@@ -13,7 +15,8 @@ import * as L from 'leaflet';
 export class MapComponent {
   private _map!: L.Map;
   selectedTool: Tool | null = null;
-  tools: Tool[] = tools;
+  availableTools: Tool[] = toolSet;
+  features: DrawnFeature[] = [];
   private drawnItems: L.FeatureGroup = L.featureGroup();
   private tempPoints: L.LatLngExpression[] = [];
 
@@ -33,18 +36,37 @@ export class MapComponent {
 
   selectTool(toolName: string) {
     this.selectedTool =
-      this.tools.find((tool) => tool.toolName === toolName) || null;
+      this.availableTools.find((tool) => tool.toolName === toolName) || null;
     this.tempPoints = [];
+  }
+
+  deleteFeature(selectedFeature: DrawnFeature): void {
+    this._map.removeLayer(selectedFeature.featureLayer);
+    console.log('deleteFeature', selectedFeature);
+    this.features = this.features.filter(
+      (feature) => feature.featureId != selectedFeature.featureId
+    );
   }
 
   private handleMapClick(latlng: L.LatLng) {
     if (this.selectedTool) {
-      this.selectedTool.action(
-        this._map,
-        this.drawnItems,
-        this.tempPoints,
-        latlng
-      );
+      try {
+        const featureLayer = this.selectedTool.action(
+          this._map,
+          this.drawnItems,
+          this.tempPoints,
+          latlng
+        );
+        this.features.push({
+          featureId: Date.now(),
+          featureTool: this.selectedTool,
+          featureLatlang: latlng,
+          featureLayer: featureLayer,
+        });
+        console.log(this.features);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 }
