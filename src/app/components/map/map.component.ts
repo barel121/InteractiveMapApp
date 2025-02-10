@@ -98,7 +98,7 @@ export class MapComponent {
     }
   }
 
-  focusOnFeature(feature: DrawnFeature) {
+  private focusOnFeature(feature: DrawnFeature) {
     const layer = this.mapDataService.getFeatureLayers().get(feature.featureId);
     if (layer) {
       const toolOfLayer = this.toolMap.get(feature.featureTool);
