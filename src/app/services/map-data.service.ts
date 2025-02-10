@@ -1,6 +1,5 @@
 import { Injectable, signal } from '@angular/core';
 import { DrawnFeature } from '../models/feature.model';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
