@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToolListComponent } from './tool-list.component';
+import { ToolSelectorComponent } from './tool-selector.component';
 
 describe('ToolListComponent', () => {
-  let component: ToolListComponent;
-  let fixture: ComponentFixture<ToolListComponent>;
+  let component: ToolSelectorComponent;
+  let fixture: ComponentFixture<ToolSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToolListComponent]
-    })
-    .compileComponents();
+      imports: [ToolSelectorComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(ToolListComponent);
+    fixture = TestBed.createComponent(ToolSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MapComponent } from './components/map/map.component';
 import { FeatureListComponent } from './components/feature-list/feature-list.component';
-import { ToolListComponent } from './components/tool-list/tool-list.component';
+import { ToolSelectorComponent } from './components/tool-selector/tool-selector.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 
@@ -13,7 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
     RouterOutlet,
     MapComponent,
     FeatureListComponent,
-    ToolListComponent,
+    ToolSelectorComponent,
     MatSidenavModule,
     MatDividerModule,
   ],
