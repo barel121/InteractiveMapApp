@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 export type Tool = {
   toolName: string;
   displayName: string;
+  toolDescription: string;
   action: (
     map: L.Map,
     drawnItems: L.FeatureGroup,

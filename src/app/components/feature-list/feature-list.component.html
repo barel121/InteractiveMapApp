@@ -1,16 +1,18 @@
 <div>
-  <h2>Feature List {{ selectedFeature?.featureId }}</h2>
-  <ul>
+  <h4>Feature List</h4>
+  <ul id="features-list">
     @for(feature of features; track feature.featureId) {
-    <li>
-      <span
-        (click)="selectFeature(feature)"
-        [class.selected]="selectedFeature?.featureId == feature.featureId"
-      >
+    <li
+      class="feature"
+      matRipple
+      [class.active]="selectedFeature?.featureId == feature.featureId"
+      (click)="selectFeature(feature)"
+      matRipple
+    >
+      <span>
         {{ feature.featureTool }}
-        {{ feature.featureLatlang }}
       </span>
-      <span (click)="deleteFeature(feature)">Delete</span>
+      <mat-icon (click)="deleteFeature(feature)">delete</mat-icon>
     </li>
     } @empty {
     <li>No features found.</li>

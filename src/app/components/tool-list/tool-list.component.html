@@ -1,15 +1,15 @@
-<div>
-  <h2>Select tool feature</h2>
-  <ul>
+<h4>Available Tools</h4>
+<div id="tool-selection">
+  <mat-button-toggle-group id="button-group">
     @for(tool of availableTools; track tool.toolName) {
-    <li
+    <mat-button-toggle
       (click)="selectTool(tool.toolName)"
-      [class.selected]="tool.toolName === selectedTool"
+      value=" {{ tool.toolName }}"
+      #tooltip="matTooltip"
+      matTooltip="{{ tool.toolDescription }}"
     >
-      {{ tool.displayName }}
-    </li>
-    } @empty {
-    <li>Tools are not found</li>
-    }
-  </ul>
+      {{ tool.displayName }}</mat-button-toggle
+    >
+    } @empty { Tools are not found }
+  </mat-button-toggle-group>
 </div>

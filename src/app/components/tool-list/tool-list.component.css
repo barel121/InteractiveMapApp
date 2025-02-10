@@ -2,3 +2,16 @@
   text-decoration: underline;
   color: blue;
 }
+#tool-selection {
+  padding: 0px 0px 15px 0px;
+  width: fit-content;
+  margin: 0 auto;
+}
+#button-group {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+h4 {
+  font-size: 24px;
+  font-weight: 400;
+  padding: 10px;
+}
