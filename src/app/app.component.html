@@ -1,8 +1,15 @@
 <main class="main">
   <div class="content">
-    <app-tool-list></app-tool-list>
-    <app-feature-list></app-feature-list>
-    <app-map></app-map>
+    <mat-sidenav-container>
+      <mat-sidenav mode="side" opened>
+        <app-tool-list></app-tool-list>
+        <mat-divider></mat-divider>
+        <app-feature-list></app-feature-list
+      ></mat-sidenav>
+      <mat-sidenav-content>
+        <app-map></app-map>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </div>
 </main>
 <router-outlet />

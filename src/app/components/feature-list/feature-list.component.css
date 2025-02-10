@@ -1,4 +1,38 @@
-.selected {
-  text-decoration: underline;
-  color: blue;
+.feature {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dfe6e9;
+  margin: 5px;
+  padding: 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+.feature span {
+  letter-spacing: 0.5;
+  text-transform: capitalize;
+}
+.feature:hover {
+  background-color: #d7e0e4;
+}
+.feature.active {
+  background-color: #dae2f9;
+}
+#features-list {
+  width: 80%;
+  margin: 0 auto;
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+#features-list button {
+  width: 36px;
+  height: 36px;
+}
+h4 {
+  font-size: 24px;
+  font-weight: 400;
+  padding: 10px;
 }

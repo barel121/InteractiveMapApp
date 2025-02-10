@@ -4,7 +4,8 @@ import { Tool } from '../models/tool.model';
 export const toolSet: Tool[] = [
   {
     toolName: 'marker',
-    displayName: 'Marker (Point of Location)',
+    displayName: 'Marker',
+    toolDescription: 'Put a marker on the map',
     action: (map, drawnItems, tempPoints, latlng) => {
       const marker = L.marker(latlng[0]).addTo(map);
       drawnItems.addLayer(marker);
@@ -17,7 +18,8 @@ export const toolSet: Tool[] = [
   },
   {
     toolName: 'line',
-    displayName: 'Draw Line',
+    displayName: 'Line',
+    toolDescription: 'Draw a line on the map',
     action: (map, drawnItems, tempPoints, latlngs) => {
       if (latlngs.length > 0) {
         tempPoints.push(...latlngs);
@@ -38,7 +40,8 @@ export const toolSet: Tool[] = [
   },
   {
     toolName: 'polygon',
-    displayName: 'Draw Polygon',
+    displayName: 'Polygon',
+    toolDescription: 'Draw a polygon on the map',
     action: (map, drawnItems, tempPoints, latlngs) => {
       if (Array.isArray(latlngs) && latlngs.length > 0) {
         tempPoints.push(...latlngs);
