@@ -49,24 +49,26 @@ To get started with the project, follow these steps:
 
 ## Add more tools to the application
 
-    The app supports easy tool expansion. To add a new tool:
-    For example we are adding circle to the tool list.
-    Head to src/tools/utils/tools.ts, following this structure:
-    ``` ts
-        {
-        toolName: 'circle',
-            displayName: 'Draw Circle',
-            action: (map, drawnItems, tempPoints, latlngs) => {
-                const circle = L.circle(latlngs[0], { radius: 500, color: 'red' }).addTo(map);
-                drawnItems.addLayer(circle);
-                return circle;
-            },
-            focus: (map, layer) => {
-                if (layer instanceof L.Circle) map.fitBounds(layer.getBounds());
-            },
+The app supports easy tool expansion. To add a new tool:
+For example we are adding circle to the tool list.
+Head to src/tools/utils/tools.ts, following this structure:
+
+```ts
+    {
+    toolName: 'circle',
+        displayName: 'Draw Circle',
+        action: (map, drawnItems, tempPoints, latlngs) => {
+            const circle = L.circle(latlngs[0], { radius: 500, color: 'red' }).addTo(map);
+            drawnItems.addLayer(circle);
+            return circle;
         },
-    ```
-    The tool will automatically appear in the UI
+        focus: (map, layer) => {
+            if (layer instanceof L.Circle) map.fitBounds(layer.getBounds());
+        },
+    },
+```
+
+The tool will automatically appear in the UI
 
 ---
 
@@ -76,3 +78,4 @@ To get started with the project, follow these steps:
 - **Leaflet.js**
 - **RxJS Signals** (for state management)
 - **Jasmine & Karma** (for unit testing)
+- **Angular Material**
