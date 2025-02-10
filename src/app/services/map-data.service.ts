@@ -52,10 +52,14 @@ export class MapDataService {
     this.features.set(
       this.features().filter((f) => f.featureId !== feature.featureId)
     );
-    const layer = this.featureLayers.get(feature.featureId);
-    if (layer) {
-      layer.remove();
+    try {
+      const layer = this.featureLayers.get(feature.featureId);
+      if (layer) {
+        layer.remove();
+      }
       this.featureLayers.delete(feature.featureId);
+    } catch (error) {
+      console.warn('Ignored error in deleteFeature:', error);
     }
     this.saveFeatures();
   }
