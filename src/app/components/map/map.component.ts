@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { toolSet } from '../../utils/tools';
 import { DrawnFeature } from '../../models/feature.model';
 import { Tool } from '../../models/tool.model';
@@ -18,25 +18,28 @@ export class MapComponent {
   private drawnItems: L.FeatureGroup = L.featureGroup();
   private tempPoints: L.LatLngExpression[] = [];
   private toolMap = new Map<string, Tool>();
-  selectedTool: Tool | null = null;
   availableTools: Tool[] = toolSet;
+  selectedTool: Tool | null = null;
   features: DrawnFeature[] = [];
+  selectedFeature: DrawnFeature | null = null;
 
-  constructor(private mapDataService: MapDataService) {}
+  constructor(private mapDataService: MapDataService) {
+    effect(() => {
+      const tool = this.mapDataService.selectedTool();
+      this.selectedTool = this.toolMap.get(tool!) || null;
+    });
+    effect(() => {
+      if (this.mapDataService.selectedFeature()) {
+        this.focusOnFeature(this.mapDataService.selectedFeature()!);
+      }
+    });
+  }
+
   ngOnInit() {
     this.toolMap = new Map(
       this.availableTools.map((tool) => [tool.toolName, tool])
     );
-    this.mapDataService.features$.subscribe((features) => {
-      this.features = features;
-    });
-    this.mapDataService.selectedFeature$.subscribe((feature) => {
-      if (feature) this.focusOnFeature(feature);
-    });
-    this.mapDataService.selectedTool$.subscribe((tool) => {
-      this.selectedTool = this.toolMap.get(tool!) || null;
-      this.tempPoints = [];
-    });
+    this.features = this.mapDataService.features();
   }
 
   ngAfterViewInit() {

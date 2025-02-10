@@ -7,13 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
-  selector: 'app-tool-list',
+  selector: 'app-tool-selector',
   standalone: true,
   imports: [MatTooltipModule, MatButtonModule, MatButtonToggleModule],
-  templateUrl: './tool-list.component.html',
-  styleUrl: './tool-list.component.css',
+  templateUrl: './tool-selector.component.html',
+  styleUrl: './tool-selector.component.css',
 })
-export class ToolListComponent {
+export class ToolSelectorComponent {
   availableTools: Tool[] = toolSet;
   selectedTool: string | null = null;
 
@@ -21,6 +21,6 @@ export class ToolListComponent {
 
   selectTool(toolName: string) {
     this.selectedTool = toolName;
-    this.mapDataService.selectTool(toolName); // ✅ מעדכן את הכלי הנבחר ב-`MapDataService`
+    this.mapDataService.selectTool(toolName);
   }
 }

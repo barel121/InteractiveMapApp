@@ -1,27 +1,78 @@
-# InteractiveMapApp
+# 🗺️ Interactive Map App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
+**A fully interactive mapping application built with Angular and Leaflet.js**  
+Allows users to **add, remove, and manage markers, lines, and polygons** on a map.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## **Key Features**
 
-## Code scaffolding
+- Select a tool (Marker, Line, Polygon)\*\*
+- Ability to add more tools to the app\*\*
+- Save and restore map features using `localStorage`\*\*
+- Focus on a selected feature\*\*
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+To get started with the project, follow these steps:
 
-## Running unit tests
+1. **Clone the repository**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   ```sh
+   git clone https://github.com/barel121/InteractiveMapApp.git
+   cd InteractiveMapApp
+   ```
 
-## Running end-to-end tests
+2. **Install dependencies**
+   Make sure you have [Node.js](https://nodejs.org/) installed. Then, run:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+   ```sh
+   npm install
+   ```
 
-## Further help
+3. **Run the application**
+   To start the development server, use the following command:
+   ```sh
+   npm start
+   ```
+   The application will be running at `http://localhost:4200`.
+4. **Running unit tests**
+   To run the tests use the following command:
+   ```sh
+   ng test
+   ```
+   **Unit test has been wrote for the map-data service**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## Add more tools to the application
+
+    The app supports easy tool expansion. To add a new tool:
+    For example we are adding circle to the tool list.
+    Head to src/tools/utils/tools.ts, following this structure:
+    ``` ts
+        {
+        toolName: 'circle',
+            displayName: 'Draw Circle',
+            action: (map, drawnItems, tempPoints, latlngs) => {
+                const circle = L.circle(latlngs[0], { radius: 500, color: 'red' }).addTo(map);
+                drawnItems.addLayer(circle);
+                return circle;
+            },
+            focus: (map, layer) => {
+                if (layer instanceof L.Circle) map.fitBounds(layer.getBounds());
+            },
+        },
+    ```
+    The tool will automatically appear in the UI
+
+---
+
+## **Technologies Used**
+
+- **Angular 18+**
+- **Leaflet.js**
+- **RxJS Signals** (for state management)
+- **Jasmine & Karma** (for unit testing)

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { MapDataService } from '../../services/map-data.service';
 import { DrawnFeature } from '../../models/feature.model';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,18 +14,14 @@ import { MatRippleModule } from '@angular/material/core';
   styleUrl: './feature-list.component.css',
 })
 export class FeatureListComponent {
-  constructor(private mapDataService: MapDataService) {}
-  features: DrawnFeature[] = [];
-  selectedFeature: DrawnFeature | null = null;
-  ngOnInit() {
-    this.mapDataService.features$.subscribe(
-      (features) => (this.features = features)
-    );
-    this.mapDataService.selectedFeature$.subscribe((feature) => {
-      console.log(feature);
-      this.selectedFeature = feature;
+  constructor(private mapDataService: MapDataService) {
+    effect(() => {
+      this.features = this.mapDataService.features();
+      this.selectedFeature = this.mapDataService.selectedFeature();
     });
   }
+  features: DrawnFeature[] = [];
+  selectedFeature: DrawnFeature | null = null;
   deleteFeature(selectedFeature: DrawnFeature): void {
     this.mapDataService.deleteFeature(selectedFeature);
   }
