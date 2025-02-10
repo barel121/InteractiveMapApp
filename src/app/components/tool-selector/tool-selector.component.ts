@@ -21,6 +21,6 @@ export class ToolSelectorComponent {
 
   selectTool(toolName: string) {
     this.selectedTool = toolName;
-    this.mapDataService.selectTool(toolName); // ✅ מעדכן את הכלי הנבחר ב-`MapDataService`
+    this.mapDataService.selectTool(toolName);
   }
 }
